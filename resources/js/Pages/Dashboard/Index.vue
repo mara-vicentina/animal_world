@@ -172,4 +172,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+h1{
+    color: #1C2751 !important;
+  }
 </style>

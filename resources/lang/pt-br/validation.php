@@ -226,6 +226,7 @@ return [
         'text'      => 'texto',
         'time'      => 'hora',
         'title'     => 'título',
+        'only_title' => 'título',
         'username'  => 'usuário',
         'year'      => 'ano',
         'description' => 'descrição',
@@ -268,6 +269,11 @@ return [
         'abdomen_locomotion' => 'abdômen e locomoção',
         'reproductive_system' => 'sistema reprodutivo',
         'exams' => 'exames',
+        'start_date' => 'data de início',
+        'start_time' => 'hora de início',
+        'end_date' => 'data de término',
+        'end_time' => 'hora de término',
+        'color' => 'motivo da consulta',
     ],
 
 ];

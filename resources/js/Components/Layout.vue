@@ -19,6 +19,12 @@
             DASHBOARD
           </Link>
   
+          <Link :class="['menu-item', $page.url === '/schedule' ? 'active' : '']" href="/schedule">
+            <!-- <v-icon class="custom-icon" icon="mdi-file-chart-outline" /> -->
+            <v-icon class="custom-icon" icon="mdi mdi-calendar-multiselect-outline" />
+            AGENDAMENTOS
+          </Link>
+          
           <Link :class="['menu-item', $page.url === '/clients' ? 'active' : '']" href="/clients">
             <v-icon class="custom-icon" icon="mdi-account-group" />
             CLIENTES

@@ -26,32 +26,31 @@
                 </p>
                 <v-divider class="my-3"></v-divider>
                 <v-btn
-                  variant="text"
-                  rounded
-                >
-                  Edit Account
-                </v-btn>
+                    color="800"
+                    text="EDITAR"
+                    variant="flat"
+                    @click="$refs.modalEditProfile.openModal()"
+                ></v-btn>
                 <v-divider class="my-3"></v-divider>
-                <v-btn
-                  variant="text"
-                  rounded
-                >
-                  Disconnect
-                </v-btn>
               </div>
             </v-card-text>
           </v-card>
         </v-menu>
       </v-row>
     </v-container>
+  <ModalEditProfile ref="modalEditProfile" />
   </template>
 
 <script>
-    export default {
-        props: {
-            user: Object,
-        },
-    }
+  import ModalEditProfile from '@/Components/EditProfile.vue'
+  export default {
+    components: {
+        ModalEditProfile,
+      },
+      props: {
+          user: Object,
+      },
+  }
 </script>
 
 <style lang="scss" scoped>

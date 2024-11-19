@@ -396,6 +396,7 @@
         },
         computed: {
             filteredAnimals() {
+                console.log(this.animals);
             return this.animals.filter(animal => animal.client_id === this.appointment.client_id);
             }
         },

@@ -7,6 +7,7 @@ use App\Http\Controllers\AppointmentsController;
 use App\Http\Controllers\FinancialController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UsersController;
+use App\Http\Controllers\ScheduleController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -120,4 +121,22 @@ Route::put('financial', [FinancialController::class, 'update'])
 
 Route::delete('financial', [FinancialController::class, 'destroy'])
     ->name('financial.destroy')
+    ->middleware('auth');
+
+// Schedule
+
+Route::get('schedule', [ScheduleController::class, 'index'])
+->name('schedule')
+->middleware('auth');
+
+Route::post('schedule', [ScheduleController::class, 'store'])
+    ->name('schedule.store')
+    ->middleware('auth');
+
+Route::put('schedule', [ScheduleController::class, 'update'])
+    ->name('schedule.update')
+    ->middleware('auth');
+
+Route::delete('schedule', [ScheduleController::class, 'destroy'])
+    ->name('schedule.destroy')
     ->middleware('auth');

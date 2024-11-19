@@ -140,4 +140,8 @@ export default {
     text-align: center;
     padding: 8px;
   }
+  
+  h1{
+    color: #1C2751 !important;
+  }
 </style>
