@@ -42,6 +42,7 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     if: ${{ success() }}
+    environment: production
 
     steps:
       - name: Configurar credenciais da AWS
