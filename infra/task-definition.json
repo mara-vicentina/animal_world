@@ -24,7 +24,7 @@
                     "appProtocol": "http"
                 }
             ],
-            "environment": [
+            "secrets": [
                 {
                     "name": "DB_USERNAME",
                     "valueFrom": "arn:aws:ssm:us-east-1:517649886701:parameter/animalworld/DB_USERNAME"
@@ -35,11 +35,11 @@
                 },
                 {
                     "name": "DB_HOST",
-                    "value": "arn:aws:ssm:us-east-1:517649886701:parameter/animalworld/DB_HOST"
+                    "valueFrom": "arn:aws:ssm:us-east-1:517649886701:parameter/animalworld/DB_HOST"
                 },
                 {
                     "name": "DB_DATABASE",
-                    "value": "arn:aws:ssm:us-east-1:517649886701:parameter/animalworld/DB_DATABASE"
+                    "valueFrom": "arn:aws:ssm:us-east-1:517649886701:parameter/animalworld/DB_DATABASE"
                 }
             ],
             "logConfiguration": {
