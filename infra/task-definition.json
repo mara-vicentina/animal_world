@@ -1,0 +1,58 @@
+{
+    "family": "animalworld-task",
+    "networkMode": "bridge",
+    "requiresCompatibilities": [
+        "EC2"
+    ],
+    "cpu": "512",
+    "memory": "512",
+    "executionRoleArn": "arn:aws:iam::517649886701:role/ecsTaskExecutionRole",
+    "taskRoleArn": "arn:aws:iam::517649886701:role/ecsTaskExecutionRole",
+    "containerDefinitions": [
+        {
+            "name": "animalworld-app",
+            "image": "517649886701.dkr.ecr.us-east-1.amazonaws.com/animalworld-app:<IMAGE_TAG>",
+            "essential": true,
+            "cpu": 0,
+            "memory": 512,
+            "portMappings": [
+                {
+                    "name": "animalworld-app-80-tcp",
+                    "containerPort": 80,
+                    "hostPort": 80,
+                    "protocol": "tcp",
+                    "appProtocol": "http"
+                }
+            ],
+            "environment": [
+                {
+                    "name": "DB_USERNAME",
+                    "valueFrom": "arn:aws:ssm:us-east-1:517649886701:parameter/animalworld/DB_USERNAME"
+                },
+                {
+                    "name": "DB_PASSWORD",
+                    "valueFrom": "arn:aws:ssm:us-east-1:517649886701:parameter/animalworld/DB_PASSWORD"
+                },
+                {
+                    "name": "DB_HOST",
+                    "value": "arn:aws:ssm:us-east-1:517649886701:parameter/animalworld/DB_HOST"
+                },
+                {
+                    "name": "DB_DATABASE",
+                    "value": "arn:aws:ssm:us-east-1:517649886701:parameter/animalworld/DB_DATABASE"
+                }
+            ],
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-group": "/ecs/animalworld-task",
+                    "awslogs-region": "us-east-1",
+                    "awslogs-stream-prefix": "ecs",
+                    "awslogs-create-group": "true",
+                    "mode": "non-blocking",
+                    "max-buffer-size": "25m"
+                }
+            }
+        }
+    ]
+}

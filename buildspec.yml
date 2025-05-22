@@ -1,0 +1,25 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 517649886701.dkr.ecr.us-east-1.amazonaws.com
+      - IMAGE_TAG=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+
+  build:
+    commands:
+      - echo Building Docker image...
+      - docker build -f infra/Dockerfile -t animalworld-app .
+      - docker tag animalworld-app 517649886701.dkr.ecr.us-east-1.amazonaws.com/animalworld-app:$IMAGE_TAG
+      - docker push 517649886701.dkr.ecr.us-east-1.amazonaws.com/animalworld-app:$IMAGE_TAG
+
+  post_build:
+    commands:
+      - echo Updating ECS task definition...
+      - sed -e "s|<IMAGE_TAG>|$IMAGE_TAG|g" infra/task-definition.json > task-def-updated.json
+      - aws ecs register-task-definition --cli-input-json file://task-def-updated.json
+      - aws ecs update-service --cluster animalworld-cluster --service animalworld-service --force-new-deployment --task-definition animalworld-task
+
+artifacts:
+  files: []
