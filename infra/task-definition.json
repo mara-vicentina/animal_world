@@ -4,8 +4,8 @@
     "requiresCompatibilities": [
         "EC2"
     ],
-    "cpu": "512",
-    "memory": "512",
+    "cpu": "256",
+    "memory": "256",
     "executionRoleArn": "arn:aws:iam::517649886701:role/ecsTaskExecutionRole",
     "taskRoleArn": "arn:aws:iam::517649886701:role/ecsTaskExecutionRole",
     "containerDefinitions": [
@@ -14,7 +14,7 @@
             "image": "517649886701.dkr.ecr.us-east-1.amazonaws.com/animalworld-app:<IMAGE_TAG>",
             "essential": true,
             "cpu": 0,
-            "memory": 512,
+            "memory": 256,
             "portMappings": [
                 {
                     "name": "animalworld-app-80-tcp",
@@ -27,19 +27,19 @@
             "secrets": [
                 {
                     "name": "DB_USERNAME",
-                    "valueFrom": "arn:aws:ssm:us-east-1:517649886701:parameter/animalworld/DB_USERNAME"
+                    "valueFrom": "arn:aws:ssm:us-east-1:517649886701:parameter/DB_USERNAME"
                 },
                 {
                     "name": "DB_PASSWORD",
-                    "valueFrom": "arn:aws:ssm:us-east-1:517649886701:parameter/animalworld/DB_PASSWORD"
+                    "valueFrom": "arn:aws:ssm:us-east-1:517649886701:parameter/DB_PASSWORD"
                 },
                 {
                     "name": "DB_HOST",
-                    "valueFrom": "arn:aws:ssm:us-east-1:517649886701:parameter/animalworld/DB_HOST"
+                    "valueFrom": "arn:aws:ssm:us-east-1:517649886701:parameter/DB_HOST"
                 },
                 {
                     "name": "DB_DATABASE",
-                    "valueFrom": "arn:aws:ssm:us-east-1:517649886701:parameter/animalworld/DB_DATABASE"
+                    "valueFrom": "arn:aws:ssm:us-east-1:517649886701:parameter/DB_DATABASE"
                 }
             ],
             "logConfiguration": {
