@@ -25,4 +25,5 @@ phases:
       - aws ecs update-service --cluster animalworld-cluster --service animalworld-service --force-new-deployment --task-definition $TASK_DEFINITION_ARN
 
 artifacts:
-  files: []
+  files:
+    - task-def-updated.json
