@@ -23,6 +23,12 @@ jobs:
       - name: Instalar dependências
         run: composer install --prefer-dist --no-progress --no-suggest
 
+      - name: Instalar dependências NPM
+        run: npm install
+
+      - name: Compilar frontend com Vite
+        run: npm run build
+
       - name: Copiar arquivo .env
         run: cp .env.example .env
 
