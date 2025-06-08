@@ -1,0 +1,73 @@
+name: Unit Tests + AWS Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Configurar PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mbstring, bcmath, intl, pdo_mysql
+          tools: composer
+
+      - name: Instalar dependências PHP
+        run: composer install --prefer-dist --no-progress --no-suggest
+
+      - name: Instalar dependências NPM
+        run: npm install
+
+      - name: Compilar frontend com Vite
+        run: npm run build
+
+      - name: Copiar arquivo .env
+        run: cp .env.example .env
+
+      - name: Gerar key do Laravel
+        run: php artisan key:generate
+
+      - name: Executar testes
+        run: ./vendor/bin/phpunit
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    if: ${{ success() }}
+    environment: production
+
+    steps:
+      - name: Configurar credenciais da AWS
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Iniciar execução da pipeline
+        id: start_pipeline
+        run: |
+          execution_id=$(aws codepipeline start-pipeline-execution --name ${{ secrets.AWS_PIPELINE }} --query 'pipelineExecutionId' --output text)
+          echo "EXECUTION_ID=$execution_id" >> $GITHUB_ENV
+
+      - name: Aguardar conclusão da pipeline
+        run: |
+          status="InProgress"
+          while [ "$status" = "InProgress" ]; do
+            sleep 15
+            status=$(aws codepipeline get-pipeline-execution --pipeline-name ${{ secrets.AWS_PIPELINE }} --pipeline-execution-id $EXECUTION_ID --query 'pipelineExecution.status' --output text)
+            echo "Status atual: $status"
+          done
+
+          if [ "$status" != "Succeeded" ]; then
+            echo "A execução da pipeline falhou com status: $status"
+            exit 1
+          fi
