@@ -16,6 +16,7 @@ use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 use Inertia\Response;
 use DateTime;
+use App\Http\Controllers\NotificationsController;
 
 class AppointmentsController extends Controller
 {
@@ -37,10 +38,13 @@ class AppointmentsController extends Controller
             $appointment->json_data                 = $appointment->toJson();
         }
     
+        $notificacoes = (new NotificationsController())->index()->getData();
+
         return Inertia::render('Appointments/Index', [
             'appointments' => $appointments,
             'clients'      => Client::get(['id', 'name']),
             'animals'      => Animal::get(['id', 'name', 'client_id']),
+            'notificacoes' => $notificacoes,
         ]);
     }
 

@@ -12,6 +12,7 @@ use App\Models\Financial;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use DateTime;
+use App\Http\Controllers\NotificationsController;
 
 class DashboardController extends Controller
 {
@@ -42,6 +43,8 @@ class DashboardController extends Controller
         $financials = Financial::where('user_id', Auth::id())
             ->whereBetween('date', [$initialDate . ' 00:00:00', $finalDate . ' 23:59:59']);
 
+        $notificacoes = (new NotificationsController())->index()->getData();
+
         return Inertia::render('Dashboard/Index', [
             'totalClients'                      => $totalClients->count(),
             'totalMalesAnimals'                 => (clone $animals)->where('sex', 0)->count(),
@@ -56,6 +59,7 @@ class DashboardController extends Controller
             'financialReportChart'              => $this->getTotalFinancialChart(),
             'initialDate'                       => $initialDate,
             'finalDate'                         => $finalDate,
+            'notificacoes' => $notificacoes,
         ]);
     }
 

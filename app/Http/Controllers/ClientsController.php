@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Client;
+use App\Models\Animal;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
@@ -12,6 +13,9 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 use Inertia\Response;
+use DateTime;
+use App\Http\Controllers\NotificationsController;
+
 
 class ClientsController extends Controller
 {
@@ -19,8 +23,26 @@ class ClientsController extends Controller
     {
         $clients = Client::where('user_id', Auth::id())->get();
 
+        $animals = Animal::join('clients', 'clients.id', '=', 'animals.client_id')
+            ->join('users', 'users.id', '=', 'clients.user_id')
+            ->where('users.id', Auth::user()->id)
+            ->select('animals.*')
+            ->get();
+    
+        foreach ($animals as $animal) {
+            $animal->birth_date_formated       = (new DateTime($animal->birth_date))->format('d/m/Y');
+            $animal->sex_formated              = $animal->sex == 0 ? 'Macho' : 'Fêmea';
+            $animal->castrated_animal_formated = $animal->castrated_animal == 0 ? 'Não' : 'Sim';
+            $animal->client_name               = Client::whereId($animal->client_id)->first()->name;
+            $animal->json_data                 = $animal->toJson();
+        }
+
+        $notificacoes = (new NotificationsController())->index()->getData();
+
         return Inertia::render('Clients/Index', [
             'clients' => $clients,
+            'animals' => $animals,
+            'notificacoes' => $notificacoes,
         ]);
     }
 

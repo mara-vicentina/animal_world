@@ -59,14 +59,27 @@
           <v-toolbar-title class="custom">Animal World</v-toolbar-title>
           <v-spacer></v-spacer>
 
-          <!-- <v-btn icon>
-            <v-icon>mdi-heart</v-icon>
-          </v-btn> -->
+          <v-btn icon @click="abrirModal">
+            
+            <v-icon class="color-icon">mdi-bell</v-icon>
+            <v-badge
+              v-if="notificacoes.length"
+              color="red"
+              content="●"
+              offset-x="-4"
+              offset-y="-12"
+              dot
+            />
+          </v-btn>
 
           <v-btn icon>
             <Profile/>
           </v-btn>
         </v-toolbar>
+        <Notifications
+          ref="Notifications"
+          :notificacoes="notificacoes"
+        />
         <v-container
           class="py-8 px-6 main-content"
           fluid
@@ -85,12 +98,17 @@
 import { Link } from '@inertiajs/vue3'
 import ToastMessages from '@/Components/ToastMessages.vue'
 import Profile from '@/Components/Profile.vue'
+import Notifications from '@/Components/Notifications.vue';
 
 export default {
   components: {
     Link,
     ToastMessages,
     Profile,
+    Notifications,
+  },
+  props: {
+    notificacoes: Array,
   },
   methods: {
     isUrl(...urls) {
@@ -103,6 +121,12 @@ export default {
     logout() {
       this.$inertia.delete('/logout')
     },
+    abrirModal() {
+      this.$refs.Notifications.openModal();
+    },
+    fecharModal() {
+      this.$refs.Notifications.closeModal();
+    }
   },
 }
 </script>
@@ -159,6 +183,10 @@ export default {
   .custom-icon {
     margin-right: 0.9rem;
     opacity: 0.6;
+  }
+
+  .color-icon{
+    color: #5572B2;
   }
 
   .custom {

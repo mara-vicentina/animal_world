@@ -126,7 +126,7 @@
                         text="Salvar  Dados"
                         color="600"
                         variant="flat"
-                        @click="createClient()"
+                        @click="editClient()"
                     ></v-btn>
                     <v-btn
                         text="Cancelar"
@@ -141,14 +141,19 @@
 </template>
 
 <script>
+    import { useForm } from '@inertiajs/vue3'
+
     export default {
         data() {
             return {
                 dialog: false,
+                user: this.$inertia.form({}),
             }
         },
         methods: {
-            openModal() {
+            openModal(user) {
+                console.log(user, 'dados do usuario')
+                // this.user = useForm(user);
                 this.dialog = true;
             }
         },

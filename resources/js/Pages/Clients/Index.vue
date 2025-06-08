@@ -49,6 +49,14 @@
               mdi-pencil
             </v-icon>
             <v-icon
+              class="me-2"
+              color="800"
+              size="large"
+              @click="$refs.modalVisualizeClient.openModal(item, animals.filter(a => a.client_id === item.id))"
+            >
+              mdi-eye
+            </v-icon>
+            <v-icon
               size="large"
               color="red"
               @click="$refs.modalDeleteClient.openModal(item.id)"
@@ -76,6 +84,7 @@
     </v-container>
 
     <ModalEditClient ref="modalEditClient" />
+    <ModalVisualizeClient ref="modalVisualizeClient" />
     <ModalDeleteClient ref="modalDeleteClient" />
   </div>
 </template>
@@ -85,6 +94,7 @@ import { Head, Link } from '@inertiajs/vue3'
 import Layout from '@/Components/Layout.vue'
 import ModalCreateClient from '@/Pages/Clients/Create.vue'
 import ModalEditClient from '@/Pages/Clients/Edit.vue'
+import ModalVisualizeClient from '@/Pages/Clients/Visualize.vue'
 import ModalDeleteClient from '@/Pages/Clients/Delete.vue'
 
 export default {
@@ -93,11 +103,13 @@ export default {
     Link,
     ModalCreateClient,
     ModalEditClient,
+    ModalVisualizeClient,
     ModalDeleteClient,
   },
   layout: Layout,
   props: {
     clients: Array,
+    animals: Array,
   },
   data() {
     return {

@@ -8,6 +8,7 @@ use App\Http\Controllers\FinancialController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\ScheduleController;
+use App\Http\Controllers\NotificationsController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -140,3 +141,15 @@ Route::put('schedule', [ScheduleController::class, 'update'])
 Route::delete('schedule', [ScheduleController::class, 'destroy'])
     ->name('schedule.destroy')
     ->middleware('auth');
+
+// Notifications
+
+Route::get('notifications', [NotificationsController::class, 'index'])
+    ->name('notifications')
+    ->middleware('auth');
+
+Route::put('/notifications/{id}/read', function ($id) {
+    $notification = \App\Models\Notification::where('user_id', Auth::id())->findOrFail($id);
+    $notification->update(['read' => true]);
+    return response()->json(['success' => true]);
+})->middleware('auth');

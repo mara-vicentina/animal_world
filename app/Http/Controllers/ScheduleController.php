@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Response;
 use Datetime;
+use App\Http\Controllers\NotificationsController;
 
 class ScheduleController extends Controller
 {
@@ -33,10 +34,13 @@ class ScheduleController extends Controller
             $schedule->end_time = (new Datetime($schedule->end_event))->format('H:i');
         }
 
+        $notificacoes = (new NotificationsController())->index()->getData();
+
         return Inertia::render('Schedule/Index', [
             'clients'   => Client::get(['id', 'name']),
             'animals'   => Animal::get(['id', 'name', 'client_id']),
             'schedules' => $schedules,
+            'notificacoes' => $notificacoes,
         ]);
     }
 

@@ -14,23 +14,25 @@
                 color="none"
                 size="large"
             >
-                <v-icon>mdi-dots-vertical</v-icon>
+                <v-icon class="color-icon center">mdi-dots-vertical</v-icon>
             </v-avatar>
         </template>
           <v-card>
             <v-card-text>
-              <div class="mx-auto text-center">
+              <div class="mx-auto">
                 <h3 class="custom-font ">{{ $page.props.auth.user.full_name }}</h3>
                 <p class="text-caption mt-1 custom-font ">
                     {{ $page.props.auth.user.email }}
                 </p>
                 <v-divider class="my-3"></v-divider>
-                <v-btn
-                    color="800"
-                    text="EDITAR"
-                    variant="flat"
-                    @click="$refs.modalEditProfile.openModal()"
-                ></v-btn>
+                <div class="text-center">
+                  <v-btn
+                      color="800"
+                      text="EDITAR"
+                      variant="flat"
+                      @click="$refs.modalEditProfile.openModal($page.props.auth.user)"
+                  ></v-btn>
+                </div>
                 <v-divider class="my-3"></v-divider>
               </div>
             </v-card-text>
@@ -39,7 +41,7 @@
       </v-row>
     </v-container>
   <ModalEditProfile ref="modalEditProfile" />
-  </template>
+</template>
 
 <script>
   import ModalEditProfile from '@/Components/EditProfile.vue'
@@ -48,16 +50,23 @@
         ModalEditProfile,
       },
       props: {
-          user: Object,
+        user: Object,
+      },
+      mounted() {
+        console.log(this.user)
       },
   }
 </script>
 
 <style lang="scss" scoped>
   .custom-font {
-      font-family: 'Inter', sans-serif!important;
-      font-weight: 500!important;
-      color: #1C2751!important;
+    font-family: 'Inter', sans-serif!important;
+    font-weight: 500!important;
+    color: #1C2751!important;
+  }
+
+  .color-icon{
+    color: #5572B2;
   }
 
 </style>

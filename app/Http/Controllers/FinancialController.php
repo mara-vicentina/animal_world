@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Inertia\Response;
 use DateTime;
+use App\Http\Controllers\NotificationsController;
 
 class FinancialController extends Controller
 {
@@ -35,11 +36,14 @@ class FinancialController extends Controller
         }
         $total += $inflow - $outflow;
 
+        $notificacoes = (new NotificationsController())->index()->getData();
+
         return Inertia::render('Financial/Index', [
             'financial' => $financials,
             'outflow'   => $outflow,
             'inflow'    => $inflow,
             'total'     => $total,
+            'notificacoes' => $notificacoes,
         ]);
             
     }
